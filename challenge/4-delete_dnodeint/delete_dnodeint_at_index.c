@@ -31,7 +31,7 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 		*head = saved_head;
 		return (-1);
 	}
-	if (0 == index)
+	if (index == 0)
 	{
 		tmp = (*head)->next;
 		free(*head);
@@ -43,11 +43,13 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 	}
 	else
 	{
-		(*head)->prev->prev = (*head)->prev;
-		free(*head);
-		if ((*head)->next)
+		/* attribue au next du node précédent le node suivant à head */
+		(*head)->prev->next = (*head)->next;
+		if ((*head)->next) /* Si un node existe */
+		/* attribue au prev du node suivant le node précédent head */
 			(*head)->next->prev = (*head)->prev;
-		*head = saved_head;
+		free(*head); /* supprime le node pointé*/
+		*head = saved_head; /* repositionne head au début de la liste chainé */
 	}
 	return (1);
 }
